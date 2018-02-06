@@ -1,0 +1,61 @@
+#默认使用配置
+spring:
+  profiles:
+    active: dev
+
+#公共配置与profiles选择无关
+mybatis:
+  typeAliasesPackage: com.spring.boot.demo.entity
+  mapperLocations: classpath:com/spring/boot/demo/mapper/*.xml
+
+---
+
+#开发配置
+spring:
+  profiles: dev
+  
+  datasource:
+    #jdbc配置
+    url: jdbc:mysql://192.168.188.61:8066/user_center
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    #连接池配置
+    druid:
+      # 使用druid连接池
+      #type: com.alibaba.druid.pool.DruidDataSource
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT1FROMDUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    #druidWebStatFilter监控配置
+    web-stat-filter:
+      enabled: true
+      url-pattern: /*
+      exclusions: ['*.js','*.gif','*.jpg','*.bmp','*.png','*.css','*.ico','/druid/*']
+      session-stat-enable: true
+      session-stat-max-count: 10
+      principal-session-name: 
+      principal-cookie-name: 
+      profile-enable: 
+    #druidStatViewServlet监控配置
+    stat-view-servlet:
+      enabled: true
+      url-pattern: /druid/*
+      reset-enable: false
+      login-username: root
+      login-password: 123456
+      #allow: 192.168.1.110,127.0.0.1
+      #deny: 192.168.16.111
+    #Spring监控AOP切入点，如x.y.z.service.*,配置多个英文逗号分隔
+    aop-patterns: com.spring.boot.demo.service.*
